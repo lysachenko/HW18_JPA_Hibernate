@@ -1,7 +1,7 @@
 package com.lysachenko;
 
 import com.lysachenko.config.Config;
-import com.lysachenko.menu.Menu;
+import com.lysachenko.menu.impl.MainMenu;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Application {
@@ -10,7 +10,7 @@ public class Application {
         var annotationConfigApplicationContext
                 = new AnnotationConfigApplicationContext(Config.class);
 
-        Menu menu = annotationConfigApplicationContext.getBean(Menu.class);
-        menu.show();
+        MainMenu mainMenu = annotationConfigApplicationContext.getBean(MainMenu.class);
+        mainMenu.show();
     }
 }

@@ -1,5 +1,6 @@
-package com.lysachenko.menu;
+package com.lysachenko.menu.impl;
 
+import com.lysachenko.menu.Menu;
 import com.lysachenko.model.Book;
 import com.lysachenko.service.BookService;
 import com.lysachenko.utils.ScannerUtil;
@@ -9,11 +10,15 @@ import org.springframework.stereotype.Component;
 import java.util.Scanner;
 
 @Component
-public class BookMenu {
+public class BookMenu implements Menu {
+
+    private final BookService bookService;
+    private final Scanner scanner = new Scanner(System.in);
 
     @Autowired
-    private BookService bookService;
-    private final Scanner scanner = new Scanner(System.in);
+    public BookMenu(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     private static final String MENU_ITEMS =
             "\n1. Add book" +
@@ -24,8 +29,7 @@ public class BookMenu {
 
     public void show() {
         while (true) {
-            System.out.println(MENU_ITEMS + "\n");
-            System.out.print("Enter your choice: ");
+            showItems(MENU_ITEMS);
             int choice = ScannerUtil.getInt();
 
             switch (choice) {

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -17,30 +16,29 @@ public class UserRepository {
     private static final String GET_USER_BY_ID = "select u from User u where u.id = ?1";
     private static final String GET_USER_BY_NAME = "select u from User u where u.name = ?1";
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    @Transactional
+    @Autowired
+    public UserRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     public void save(User user) {
         getCurrentSession().save(user);
     }
 
-    @Transactional
     public void update(User user) {
         getCurrentSession().update(user);
     }
 
-    @Transactional
     public void delete(User user) {
         getCurrentSession().delete(user);
     }
 
-    @Transactional
     public List<User> getAll() {
         return getCurrentSession().createQuery(GET_ALL_USERS, User.class).getResultList();
     }
 
-    @Transactional
     public User getUserById(Long id) {
         try {
             return getCurrentSession()
@@ -52,7 +50,6 @@ public class UserRepository {
         }
     }
 
-    @Transactional
     public List<User> getUserByName(String name) {
         return getCurrentSession()
                 .createQuery(GET_USER_BY_NAME, User.class)

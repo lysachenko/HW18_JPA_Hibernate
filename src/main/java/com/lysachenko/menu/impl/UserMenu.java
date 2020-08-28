@@ -1,5 +1,6 @@
-package com.lysachenko.menu;
+package com.lysachenko.menu.impl;
 
+import com.lysachenko.menu.Menu;
 import com.lysachenko.model.Book;
 import com.lysachenko.model.User;
 import com.lysachenko.service.BookService;
@@ -13,13 +14,17 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 @Component
-public class UserMenu {
+public class UserMenu implements Menu {
+
+    private final UserService userService;
+    private final BookService bookService;
+    private final Scanner scanner = new Scanner(System.in);
 
     @Autowired
-    private UserService userService;
-    @Autowired
-    private BookService bookService;
-    private final Scanner scanner = new Scanner(System.in);
+    public UserMenu(UserService userService, BookService bookService) {
+        this.userService = userService;
+        this.bookService = bookService;
+    }
 
     private static final String MENU_ITEMS =
             "\n1. Add user" +
@@ -34,8 +39,7 @@ public class UserMenu {
 
     public void show() {
         while (true) {
-            System.out.println(MENU_ITEMS + "\n");
-            System.out.print("Enter your choice: ");
+            showItems(MENU_ITEMS);
             int choice = ScannerUtil.getInt();
 
             switch (choice) {
